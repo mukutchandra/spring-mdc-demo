@@ -6,7 +6,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mukut.spring.model.Employee;
@@ -21,7 +20,7 @@ public class EmployeeController {
 	private EmployeeService service;
 	
 	@GetMapping("/employees")
-	public List<Employee> getAllEmpployee(@RequestHeader("correlationId") String correlationId){
+	public List<Employee> getAllEmpployee(){
 		LOGGER.info("Inside getAllEmpployee method of EmployeeController");
 		return service.getAllEmployee();
 	}

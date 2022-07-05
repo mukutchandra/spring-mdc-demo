@@ -41,15 +41,28 @@ public class MDCFilter extends OncePerRequestFilter {
 	@Override
     protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response, final FilterChain chain)
             throws java.io.IOException, ServletException {
+		String srcIpKey = "srcIpKey", hostKey = "hostKey", refererKey = "refererKey", xForwardedForKey = "xForwardedForKey";
         try {
             final String token = extractToken(request);
+            final String srcIp = request.getRemoteAddr();
+            final String host = request.getHeader("Host");
+            final String referer = request.getHeader("Referer");
+            final String xForwardedFor = request.getHeader("X-Forwarded-For");
             MDC.put(mdcKey, token);
+            MDC.put(srcIpKey, srcIp);
+            MDC.put(hostKey, host);
+            MDC.put(refererKey, referer);
+            MDC.put(xForwardedForKey, xForwardedFor);
             if (StringUtils.hasText(responseHeader)) {
                 response.addHeader(responseHeader, token);
             }
             chain.doFilter(request, response);
         } finally {
             MDC.remove(mdcKey);
+            MDC.remove(srcIpKey);
+            MDC.remove(hostKey);
+            MDC.remove(refererKey);
+            MDC.remove(xForwardedForKey);
         }
     }
 
